@@ -44,6 +44,7 @@ class MainWindow(QtGui.QMainWindow):
 	def do_rename(self):
 		logd("do_rename:")
 
+
 	def first_init(self):
 		logd("on_timer:")
 		self.cb_actions_changed()
@@ -78,14 +79,16 @@ class MainWindow(QtGui.QMainWindow):
 
 
 	def le_example_update_selection(self):
-		start_pos = self.sb_del_from_idx.value()
-		count = self.sb_del_from_count.value()
-		logd("le_example_update_selection: start_pos=%r, count=%r",
-			start_pos, count)
-		self.lw_dnames_update()
-		self.le_example.blockSignals(True)
-		self.le_example.setSelection(start_pos, count)
-		self.le_example.blockSignals(False)
+		act_idx = self.cb_actions.currentIndex()
+		if act_idx==0: # delete symbols
+			start_pos = self.sb_del_from_idx.value()
+			count = self.sb_del_from_count.value()
+			#~ logd("le_example_update_selection: start_pos=%r, count=%r",
+				#~ start_pos, count)
+			self.lw_dnames_update()
+			self.le_example.blockSignals(True)
+			self.le_example.setSelection(start_pos, count)
+			self.le_example.blockSignals(False)
 
 
 	def le_example_leaved(self):
@@ -97,26 +100,24 @@ class MainWindow(QtGui.QMainWindow):
 		self.le_example.setText(self.lw_snames.currentItem().text())
 		self.le_example_update_selection()
 
+
 	def sb_del_values_update(self):
-		#~ logd("sb_del_values_update: hasSelectedText()=%r,"
-			#~ " selectionStart()=%r",
-			#~ self.le_example.hasSelectedText(),
-			#~ self.le_example.selectionStart())
-		start_pos = self.le_example.selectionStart()
-		count = len(self.le_example.selectedText())
-		if start_pos==-1 and count==0:
-			return
-		logd("sb_del_values_update: start_pos=%r, count=%r", start_pos, count)
+		act_idx = self.cb_actions.currentIndex()
+		if act_idx==0: # delete symbols
 
-		self.sb_del_from_idx.blockSignals(True)
-		self.sb_del_from_count.blockSignals(True)
+			if self.le_example.hasSelectedText():
+				start_pos = self.le_example.selectionStart()
+				count = len(self.le_example.selectedText())
 
-		self.sb_del_from_idx.setValue(start_pos)
-		self.sb_del_from_count.setValue(count)
+				self.sb_del_from_idx.blockSignals(True)
+				self.sb_del_from_count.blockSignals(True)
 
-		self.sb_del_from_idx.blockSignals(False)
-		self.sb_del_from_count.blockSignals(False)
-		self.lw_dnames_update()
+				self.sb_del_from_idx.setValue(start_pos)
+				self.sb_del_from_count.setValue(count)
+
+				self.sb_del_from_idx.blockSignals(False)
+				self.sb_del_from_count.blockSignals(False)
+				self.lw_dnames_update()
 
 
 	def process_name(self, sn):
@@ -128,6 +129,7 @@ class MainWindow(QtGui.QMainWindow):
 		else:
 			dn = "act_idx="+str(act_idx)+" " + sn
 		return dn
+
 
 	def lw_dnames_update(self):
 		self.lw_dnames.clear()
