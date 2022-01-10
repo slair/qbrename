@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>662</width>
+    <height>444</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QGroupBox" name="gb_action">
+      <property name="title">
+       <string> Что делать? </string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QComboBox" name="cb_actions">
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <item>
+          <property name="text">
+           <string>Удалить символы</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Вставить символы</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Заменить символы</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Изменить расширение</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="f_del_symbols">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>с</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="sb_del_from_idx"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>символа</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="sb_del_from_count">
+            <property name="value">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>символов</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="f_replace">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>искать</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="le_search"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>заменить на</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="le_replace"/>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="f_change_ext">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>заменить расширение на</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="le_ext"/>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="f_insert">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>вставить в</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="cb_insert_dst">
+            <item>
+             <property name="text">
+              <string>начало</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>конец</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>с позиции</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="spinBox"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>символы</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="le_insert"/>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="f_example">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QLineEdit" name="le_example">
+            <property name="font">
+             <font>
+              <family>Ubuntu Condensed</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pb_do">
+            <property name="text">
+             <string>Выполнить</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pb_exit">
+            <property name="text">
+             <string>Выход</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QGroupBox" name="gb_snames">
+        <property name="title">
+         <string> Было </string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QListWidget" name="lw_snames">
+           <property name="font">
+            <font>
+             <family>Ubuntu Condensed</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <item>
+            <property name="text">
+             <string>21122109=#=Как россияне крали миллионы с банковских карт по всему миру _ КАРДЕРЫ. Часть 2=#=-FUO8RHmqhI.mp4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>21122109=#=Как ультрафиолет вызывает старение и рак [Veritasium]=#=rxU5OrIPu4w.mp4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>21122514=#=Невероятные приключения американца в России !=#=K78KjxDm4mo.mp4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>22010621=#='Сегодня' - 6 января 2022 года. 19_00=#=7GmArBEfNZo.mp4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>22010621=#=Funniest Cats 😹 - Don't try to hold back Laughter 😂 - Funny Cats Life=#=LvbxKRlkjLM.mp4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>22010621=#=Полный расколбас в переводе Гоблина [R]=#=vNJbhh8xfOw.mp4</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="gb_dnames">
+        <property name="title">
+         <string> Станет </string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <widget class="QListWidget" name="lw_dnames">
+           <property name="font">
+            <font>
+             <family>Ubuntu Condensed</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <item>
+            <property name="text">
+             <string>22010621=#=Полный расколбас в переводе Гоблина [R]=#=vNJbhh8xfOw.mp4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>22010621=#=Funniest Cats 😹 - Don't try to hold back Laughter 😂 - Funny Cats Life=#=LvbxKRlkjLM.mp4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>22010621=#='Сегодня' - 6 января 2022 года. 19_00=#=7GmArBEfNZo.mp4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>21122514=#=Невероятные приключения американца в России !=#=K78KjxDm4mo.mp4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>21122109=#=Как ультрафиолет вызывает старение и рак [Veritasium]=#=rxU5OrIPu4w.mp4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>21122109=#=Как россияне крали миллионы с банковских карт по всему миру _ КАРДЕРЫ. Часть 2=#=-FUO8RHmqhI.mp4</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>662</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pb_exit</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>632</x>
+     <y>288</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>621</x>
+     <y>201</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_actions</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>cb_actions_changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>373</x>
+     <y>64</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>408</x>
+     <y>45</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sb_del_from_idx</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>le_example_update_selection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>56</x>
+     <y>109</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>73</x>
+     <y>120</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sb_del_from_count</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>le_example_update_selection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>167</x>
+     <y>97</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>182</x>
+     <y>75</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>le_example</sender>
+   <signal>selectionChanged()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>sb_del_values_update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>132</x>
+     <y>278</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>162</x>
+     <y>252</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pb_do</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>do_rename()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>518</x>
+     <y>278</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>533</x>
+     <y>232</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>le_example</sender>
+   <signal>lostFocus()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>le_example_leaved()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>35</x>
+     <y>284</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>47</x>
+     <y>252</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lw_snames</sender>
+   <signal>itemSelectionChanged()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>lw_snames_selchanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>222</x>
+     <y>358</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>188</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>cb_actions_changed()</slot>
+  <slot>le_example_update_selection()</slot>
+  <slot>sb_del_values_update()</slot>
+  <slot>do_rename()</slot>
+  <slot>le_example_leaved()</slot>
+  <slot>lw_snames_selchanged()</slot>
+ </slots>
+</ui>
