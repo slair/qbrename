@@ -1,0 +1,2 @@
+# qbrename
+qt bulk rename
