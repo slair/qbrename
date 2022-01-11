@@ -1,10 +1,27 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+#~ print("!\n+\n-\n---\n+++\n>\n<\n")
+
 import os, sys, string, glob
+
+win32 = sys.platform=="win32"
+linux = sys.platform=="linux"
+
 from PyQt4 import QtCore, QtGui, uic
 
-#~ print("!\n+\n-\n---\n+++\n>\n<\n")
+BRIGHTRED = QtGui.QColor(255, 20, 0)
+BRIGHTYELLOW = QtGui.QColor(255, 255, 0)
+DEFAULTBG = None
+DEFAULTFG = None
+
+bad_symbols = ["\\", "/", "<", ">", '"', "|", "?", "*"]
+bad_names = ["", ".", ".."]
+if win32:
+	bad_symbols.append(":")
+	bad_names.extend(["CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3",
+		"COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2",
+		"LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"])
 
 myname = os.path.splitext(os.path.basename(__file__))[0]
 myfolder = os.path.dirname(os.path.realpath(__file__))
@@ -46,7 +63,10 @@ class MainWindow(QtGui.QMainWindow):
 
 
 	def first_init(self):
-		logd("on_timer:")
+		global DEFAULTBG, DEFAULTFG
+		#~ logd("on_timer:")
+		DEFAULTBG = self.lw_dnames.item(0).background()
+		DEFAULTFG = self.lw_dnames.item(0).foreground()
 		self.cb_actions_changed()
 		self.le_example_update_selection()
 
@@ -133,9 +153,50 @@ class MainWindow(QtGui.QMainWindow):
 
 	def lw_dnames_update(self):
 		self.lw_dnames.clear()
+		dnames_set = []
+		bads = []
 		for i in range(self.lw_snames.count()):
 			new_name = self.process_name(self.lw_snames.item(i).text())
 			self.lw_dnames.addItem(new_name)
+
+			if new_name.upper() in bad_names:	# this names not allowed
+				if i not in bads: bads.append(i)
+			else:
+				for c in bad_symbols:	# bad symbols not allowed
+					if c in new_name:
+						if i not in bads: bads.append(i)
+						break
+
+			if new_name in dnames_set:
+				# duplicate name
+				if i not in bads: bads.append(i)
+
+				for idx in range(len(dnames_set)):
+					if dnames_set[idx]==new_name:
+						if idx not in bads: bads.append(idx)
+
+				dnames_set.append(new_name)
+			else:
+				dnames_set.append(new_name)
+		if len(bads)>0:
+			logd("!lw_dnames_update: bads=%s", bads)
+			self.pb_do.setEnabled(False)
+			for idx in bads:
+				self.lw_snames.item(idx).setBackground(BRIGHTRED)
+				self.lw_snames.item(idx).setForeground(BRIGHTYELLOW)
+
+				self.lw_dnames.item(idx).setBackground(BRIGHTRED)
+				self.lw_dnames.item(idx).setForeground(BRIGHTYELLOW)
+		else:
+			self.pb_do.setEnabled(True)
+			#~ logd(QtGui.QColor.colorNames())
+			for idx in range(self.lw_snames.count()):
+				self.lw_snames.item(idx).setBackground(DEFAULTBG)
+				self.lw_snames.item(idx).setForeground(DEFAULTFG)
+
+				self.lw_dnames.item(idx).setBackground(DEFAULTBG)
+				self.lw_dnames.item(idx).setForeground(DEFAULTFG)
+
 
 	def keyPressEvent(self, event):
 		key = event.key()
