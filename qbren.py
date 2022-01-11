@@ -147,7 +147,7 @@ class MainWindow(QtGui.QMainWindow):
 			count = self.sb_del_from_count.value()
 			dn = sn[:start_pos] + sn[start_pos+count:]
 		else:
-			dn = "act_idx="+str(act_idx)+" " + sn
+			dn = "act_idx:>"+str(act_idx)+" " + sn
 		return dn
 
 
@@ -178,6 +178,7 @@ class MainWindow(QtGui.QMainWindow):
 				dnames_set.append(new_name)
 			else:
 				dnames_set.append(new_name)
+
 		if len(bads)>0:
 			logd("!lw_dnames_update: bads=%s", bads)
 			self.pb_do.setEnabled(False)
@@ -189,7 +190,6 @@ class MainWindow(QtGui.QMainWindow):
 				self.lw_dnames.item(idx).setForeground(BRIGHTYELLOW)
 		else:
 			self.pb_do.setEnabled(True)
-			#~ logd(QtGui.QColor.colorNames())
 			for idx in range(self.lw_snames.count()):
 				self.lw_snames.item(idx).setBackground(DEFAULTBG)
 				self.lw_snames.item(idx).setForeground(DEFAULTFG)
