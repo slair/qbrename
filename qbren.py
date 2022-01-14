@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#~ print("!\n+\n-\n---\n+++\n>\n<\n")
+#~ _DEBUG = True
 
-import os, sys, string, glob
+try:
+	_DEBUG
+except NameError:
+	_DEBUG = False
+
+import os, sys, string, glob, argparse
 
 win32 = sys.platform=="win32"
 linux = sys.platform=="linux"
@@ -44,7 +49,8 @@ class MainWindow(QtGui.QMainWindow):
 
 		self.snames = names
 
-		self.le_example.setText(self.snames[0])
+		if len(self.snames)>0:
+			self.le_example.setText(self.snames[0])
 
 		self.lw_snames.clear()
 		self.lw_snames.addItems(self.snames)
@@ -222,18 +228,84 @@ class MainWindow(QtGui.QMainWindow):
 		#~ if result == QtGui.QMessageBox.Yes:
 			#~ event.accept()
 
-def main():
-	logd("Current dir: '%s'", os.getcwd())
 
-	if len(sys.argv)>1:
-		sfilenames = sys.argv[1:]
+def setup_logging(*args, **kwargs):
+	print("setup logging", args, kwargs)
+
+
+class CFG(object):
+	filenames = []
+	_debug = _DEBUG
+
+	def __init__(self, *args, **keywords):
+		super().__init__()	# *args, **keywords
+
+		for key,value in keywords.items():
+			setattr(self, key, value)
+
+	def __str__(self):
+		res="%s {"%(self.__class__)
+		for attr in dir(self):
+			if not attr[0]=="_" and not callable(getattr(self, attr)):
+				res += "\n\t%s = %s"%(attr, getattr(self, attr))
+		res += "\n%s }"%(self.__class__)
+		return res
+
+	@property
+	def debug(self):
+		return self._debug
+	@debug.setter
+	def debug(self, val):
+		self._debug = val
+		setup_logging(self._debug)
+
+
+# end CFG class ===
+
+
+def parse_commandline(args):
+	global cfg
+
+	ap = argparse.ArgumentParser(description="Qt Bulk rename.")
+
+	ap.add_argument("-d", "--debug", action="store_true", default=_DEBUG,
+		dest="debug")
+
+	ap.add_argument("filenames", metavar="FN", type=str, nargs="*",
+		help="filenames to rename")
+
+	ns = ap.parse_args(args[1:])
+
+	logd(ns)
+
+	cfg.debug = ns.debug
+	if len(ns.filenames)>0:
+		filelist = []
+		for fn in ns.filenames:
+			if "*" in fn or "?" in fn:
+				filelist.extend(glob.glob(fn))
+			else:
+				filelist.append(fn)
+		cfg.filenames = list(filter(lambda x:os.path.exists(x), filelist))
 	else:
-		sfilenames = glob.glob("*")
+		cfg.filenames = glob.glob("*")
+
+cfg = CFG()
+
+def main():
+	global cfg
+	logd("Current dir: %r", os.getcwd())
+
+	parse_commandline(sys.argv)
+
+	logd(cfg)
+
+	sfilenames = cfg.filenames
 
 	# todo: check for unicode above 0xffff and ask to fix
 	#~ sfilenames = strip_above_0xffff("|".join(sfilenames)).split("|")
 
-	logd("\n".join(sfilenames))
+	#~ logd("\n".join(sfilenames))
 
 	app = QtGui.QApplication(sys.argv)
 	mw = MainWindow(sfilenames)
