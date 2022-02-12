@@ -8,7 +8,7 @@ try:
 except NameError:
 	_DEBUG = False
 
-import os, sys, string, glob, argparse
+import os, sys, string, glob, argparse, json
 
 win32 = sys.platform=="win32"
 linux = sys.platform=="linux"
@@ -42,10 +42,29 @@ def logd(*args, **kwargs):
 		print("!", kwargs)
 
 
+def save_obj(obj, fn):
+	with open(fn, 'w') as handle:
+		logd("Jsoning '%s'", fn)
+		#~ json.dump(obj, handle, cls=APPEncoder, indent=2)
+		json.dump(obj, handle, indent=2)
+
+
+def load_obj(fn):
+	if not os.path.exists(fn):
+		return dict()
+
+	with open(fn, 'r') as handle:
+		logd("Unjsoning '%s'", fn)
+		#~ return json.load(handle, object_hook=APP_decode)
+		return json.load(handle)
+
+
 class MainWindow(QtGui.QMainWindow):
 	def __init__(self, names):
 		QtGui.QMainWindow.__init__(self)
 		uic.loadUi(os.path.join(myfolder, "main-window.ui"), self)
+
+		self.fn_config = myname+".json"
 
 		self.snames = names
 
@@ -54,6 +73,10 @@ class MainWindow(QtGui.QMainWindow):
 
 		self.lw_snames.clear()
 		self.lw_snames.addItems(self.snames)
+
+		if os.path.exists(cfg.fn_config):
+			d = load_obj(cfg.fn_config)
+			self.setGeometry(d["left"], d["top"], d["width"], d["height"])
 
 		self.show()
 
@@ -218,6 +241,15 @@ class MainWindow(QtGui.QMainWindow):
 
 	def closeEvent(self, event):
 		logd("Exiting")
+
+		dMainWindow_Rect = dict(
+			left=self.frameGeometry().left(),
+			top=self.frameGeometry().top(),
+			width=self.frameGeometry().width(),
+			height=self.frameGeometry().height(),
+		)
+		save_obj(dMainWindow_Rect, cfg.fn_config)
+
 		event.accept()
 		#~ result = QtGui.QMessageBox.question(self,
 					  #~ "Confirm Exit...",
@@ -240,8 +272,41 @@ class CFG(object):
 	def __init__(self, *args, **keywords):
 		super().__init__()	# *args, **keywords
 
+		self.myname = args[0]
+
 		for key,value in keywords.items():
 			setattr(self, key, value)
+
+		if "HOME" in os.environ:
+			env_HOME = os.environ["HOME"]
+		elif "HOMEDRIVE" in os.environ and "HOMEPATH" in os.environ:
+			env_HOME = os.environ["HOMEDRIVE"] + os.environ["HOMEPATH"]
+
+		if "XDG_DATA_HOME" in os.environ:
+			self._xdg_data_home = os.environ["XDG_DATA_HOME"]
+		elif "APPDATA" in os.environ:
+			self._xdg_data_home = os.environ["APPDATA"]
+		elif env_HOME:
+			self._xdg_data_home = os.path.join(
+				env_HOME,
+				os.path.join(".local", "share")
+			)
+		#~ logd("XDG_DATA_HOME=%r", self._xdg_data_home)
+
+		if "XDG_CONFIG_HOME" in os.environ:
+			self._xdg_config_home = os.environ["XDG_CONFIG_HOME"]
+		elif "LOCALAPPDATA" in os.environ:
+			self._xdg_config_home = os.environ["LOCALAPPDATA"]
+		elif env_HOME:
+			self._xdg_config_home = os.path.join(
+				env_HOME,
+				".config"
+			)
+		#~ logd("XDG_CONFIG_HOME=%r", self._xdg_config_home)
+
+		self.fn_config = os.path.join(self._xdg_config_home, myname+".json")
+		#~ logd("fn_config=%r", self.fn_config)
+
 
 	def __str__(self):
 		res="%s {"%(self.__class__)
@@ -290,7 +355,7 @@ def parse_commandline(args):
 	else:
 		cfg.filenames = glob.glob("*")
 
-cfg = CFG()
+cfg = CFG(myname)
 
 def main():
 	global cfg
