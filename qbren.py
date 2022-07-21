@@ -13,7 +13,7 @@ import os, sys, string, glob, argparse, json
 win32 = sys.platform=="win32"
 linux = sys.platform=="linux"
 
-from PyQt4 import QtCore, QtGui, uic
+from PyQt5 import QtCore, QtGui, uic, QtWidgets
 
 BRIGHTRED = QtGui.QColor(255, 20, 0)
 BRIGHTYELLOW = QtGui.QColor(255, 255, 0)
@@ -59,9 +59,9 @@ def load_obj(fn):
 		return json.load(handle)
 
 
-class MainWindow(QtGui.QMainWindow):
+class MainWindow(QtWidgets.QMainWindow):
 	def __init__(self, names):
-		QtGui.QMainWindow.__init__(self)
+		QtWidgets.QMainWindow.__init__(self)
 		uic.loadUi(os.path.join(myfolder, "main-window.ui"), self)
 
 		self.fn_config = myname+".json"
@@ -82,7 +82,8 @@ class MainWindow(QtGui.QMainWindow):
 
 		self.timer = QtCore.QTimer()
 		self.timer.setSingleShot(True)
-		self.connect(self.timer, QtCore.SIGNAL('timeout()'), self.first_init)
+		#~ self.connect(self.timer, QtCore.SIGNAL('timeout()'), self.first_init)
+		self.timer.timeout.connect(self.first_init)
 		self.timer.start(0.0)
 		#~ self.first_init()
 
@@ -372,7 +373,7 @@ def main():
 
 	#~ logd("\n".join(sfilenames))
 
-	app = QtGui.QApplication(sys.argv)
+	app = QtWidgets.QApplication(sys.argv)
 	mw = MainWindow(sfilenames)
 	sys.exit(app.exec())
 
